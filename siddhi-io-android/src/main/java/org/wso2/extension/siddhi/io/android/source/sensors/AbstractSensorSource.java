@@ -55,8 +55,8 @@ public abstract class AbstractSensorSource extends Source implements SensorEvent
                      SiddhiAppContext siddhiAppContext) {
         this.sourceEventListener = sourceEventListener;
         this.siddhiAppContext = siddhiAppContext;
-        this.sensorManager = (SensorManager) (SiddhiAppService.instance.getSystemService(
-                Context.SENSOR_SERVICE));
+        this.sensorManager = (SensorManager) (SiddhiAppService.getServiceInstance().
+                getSystemService(Context.SENSOR_SERVICE));
         this.pollingInterval = Long.valueOf(optionHolder.validateAndGetStaticValue(
                 "polling.interval", "0"));
 

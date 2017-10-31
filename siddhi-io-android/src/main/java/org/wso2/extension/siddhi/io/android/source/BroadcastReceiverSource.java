@@ -93,12 +93,12 @@ public class BroadcastReceiverSource extends Source {
     @Override
     public void connect(ConnectionCallback connectionCallback) throws
             ConnectionUnavailableException {
-        SiddhiAppService.instance.registerReceiver(dataUpdateReceiver, intentFilter);
+        SiddhiAppService.getServiceInstance().registerReceiver(dataUpdateReceiver, intentFilter);
     }
 
     @Override
     public void disconnect() {
-        SiddhiAppService.instance.unregisterReceiver(dataUpdateReceiver);
+        SiddhiAppService.getServiceInstance().unregisterReceiver(dataUpdateReceiver);
     }
 
     @Override
@@ -108,12 +108,12 @@ public class BroadcastReceiverSource extends Source {
 
     @Override
     public void pause() {
-        SiddhiAppService.instance.unregisterReceiver(dataUpdateReceiver);
+        SiddhiAppService.getServiceInstance().unregisterReceiver(dataUpdateReceiver);
     }
 
     @Override
     public void resume() {
-        SiddhiAppService.instance.registerReceiver(dataUpdateReceiver, intentFilter);
+        SiddhiAppService.getServiceInstance().registerReceiver(dataUpdateReceiver, intentFilter);
     }
 
     @Override

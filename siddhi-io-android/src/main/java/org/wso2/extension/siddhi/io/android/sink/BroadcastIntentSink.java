@@ -89,7 +89,7 @@ public class BroadcastIntentSink extends Sink {
     @Override
     protected void init(StreamDefinition streamDefinition, OptionHolder optionHolder,
                         ConfigReader configReader, SiddhiAppContext siddhiAppContext) {
-        context = SiddhiAppService.instance;
+        context = SiddhiAppService.getServiceInstance();
         identifier = optionHolder.validateAndGetStaticValue(BROADCAST_FILTER_IDENTIFIER);
     }
 

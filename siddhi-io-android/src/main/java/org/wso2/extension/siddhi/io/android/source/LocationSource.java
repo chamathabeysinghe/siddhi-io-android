@@ -102,7 +102,7 @@ public class LocationSource extends Source implements LocationListener {
         this.sourceEventListener = sourceEventListener;
         this.siddhiAppContext = siddhiAppContext;
         this.locationManager = (LocationManager)
-                SiddhiAppService.instance.getSystemService(Context.LOCATION_SERVICE);
+                SiddhiAppService.getServiceInstance().getSystemService(Context.LOCATION_SERVICE);
         this.pollingInterval = Long.valueOf(optionHolder.validateAndGetStaticValue(
                 "polling.interval", "0"
         ));
@@ -132,10 +132,10 @@ public class LocationSource extends Source implements LocationListener {
     public void connect(ConnectionCallback connectionCallback)
             throws ConnectionUnavailableException {
 
-        if (ActivityCompat.checkSelfPermission(SiddhiAppService.instance,
+        if (ActivityCompat.checkSelfPermission(SiddhiAppService.getServiceInstance(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(SiddhiAppService.instance,
+                && ActivityCompat.checkSelfPermission(SiddhiAppService.getServiceInstance(),
                 android.Manifest.permission.ACCESS_COARSE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED) {
             throw new ConnectionUnavailableException("Android Location permissions are not" +
@@ -173,10 +173,10 @@ public class LocationSource extends Source implements LocationListener {
 
     @Override
     public void resume() {
-        if (ActivityCompat.checkSelfPermission(SiddhiAppService.instance,
+        if (ActivityCompat.checkSelfPermission(SiddhiAppService.getServiceInstance(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(SiddhiAppService.instance,
+                && ActivityCompat.checkSelfPermission(SiddhiAppService.getServiceInstance(),
                 android.Manifest.permission.ACCESS_COARSE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED) {
             throw new SiddhiAppRuntimeException("Android Location permissions are not" +
@@ -248,10 +248,10 @@ public class LocationSource extends Source implements LocationListener {
     }
 
     private void getCurrentLocation() {
-        if (ActivityCompat.checkSelfPermission(SiddhiAppService.instance,
+        if (ActivityCompat.checkSelfPermission(SiddhiAppService.getServiceInstance(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(SiddhiAppService.instance,
+                && ActivityCompat.checkSelfPermission(SiddhiAppService.getServiceInstance(),
                 android.Manifest.permission.ACCESS_COARSE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED) {
             throw new SiddhiAppRuntimeException("Android Location permissions are not" +

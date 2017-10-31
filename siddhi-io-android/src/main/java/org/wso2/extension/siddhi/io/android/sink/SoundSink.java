@@ -146,7 +146,7 @@ public class SoundSink extends Sink {
     }
 
     public void playRingTone(Uri uri, int time) {
-        MediaPlayer player = MediaPlayer.create(SiddhiAppService.instance, uri);
+        MediaPlayer player = MediaPlayer.create(SiddhiAppService.getServiceInstance(), uri);
         player.setLooping(true);
         player.start();
         new CountDownTimer(time, 1000) {

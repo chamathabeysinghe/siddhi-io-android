@@ -118,8 +118,8 @@ public class NotificationSink extends Sink {
         title = optionHolder.validateAndGetStaticValue(TITLE_STRING, "Siddhi Platform");
         icon = Integer.parseInt(optionHolder.validateAndGetStaticValue(NOTIFICATION_ICON_STRING,
                 String.valueOf(SiddhiAppService.getAppIcon())));
-        notificationManager = (NotificationManager) SiddhiAppService.instance.getSystemService(
-                Context.NOTIFICATION_SERVICE);
+        notificationManager = (NotificationManager) SiddhiAppService.getServiceInstance().
+                getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
     @Override
@@ -153,7 +153,7 @@ public class NotificationSink extends Sink {
         else if(o instanceof String){
             message = o.toString();
         }
-        SiddhiAppService.instance.createNotification
+        SiddhiAppService.getServiceInstance().createNotification
                 (SIDDHI_CHANNEL_ID,SIDDHI_CHANNEL_NAME,title,message,
                         icon,this.notificationId,true);
 
