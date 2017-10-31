@@ -31,7 +31,7 @@ allprojects {
         google()
         jcenter()
         maven { url 'http://maven.wso2.org/nexus/content/groups/wso2-public/' }
-
+        maven { url 'https://jitpack.io' }
     }
 }
 

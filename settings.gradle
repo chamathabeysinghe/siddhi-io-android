@@ -1,1 +1,1 @@
-include ':siddhi-io-android', ':siddhi-android-platform-debug', ':sample-siddhi-app'
+include ':siddhi-io-android', ':sample-siddhi-app', ':siddhi-android-platform-debug'
