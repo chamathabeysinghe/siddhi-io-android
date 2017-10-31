@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">sample-siddhi-app</string>
+    <string name="title_activity_custom_app">Apps</string>
 </resources>
