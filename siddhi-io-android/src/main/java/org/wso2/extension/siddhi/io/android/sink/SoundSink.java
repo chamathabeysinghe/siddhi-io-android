@@ -20,8 +20,6 @@ package org.wso2.extension.siddhi.io.android.sink;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.CountDownTimer;
-import android.util.Log;
 import org.wso2.siddhi.android.platform.SiddhiAppService;
 import org.wso2.siddhi.annotation.Example;
 import org.wso2.siddhi.annotation.Extension;
@@ -37,6 +35,8 @@ import org.wso2.siddhi.core.util.transport.OptionHolder;
 import org.wso2.siddhi.query.api.definition.StreamDefinition;
 
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @Extension(
         name = "android-sound",
@@ -145,20 +145,36 @@ public class SoundSink extends Sink {
 
     }
 
-    public void playRingTone(Uri uri, int time) {
+    private void playRingTone(Uri uri, int time) {
         MediaPlayer player = MediaPlayer.create(SiddhiAppService.getServiceInstance(), uri);
         player.setLooping(true);
+
+        Timer r = new Timer();
+        PeriodicRing periodicRing = new PeriodicRing(player,r);
+
         player.start();
-        new CountDownTimer(time, 1000) {
+        r.schedule(periodicRing,0,time);
 
-            public void onTick(long millisUntilFinished) {
+    }
 
+    private class PeriodicRing extends TimerTask{
+        boolean isFirst =true;
+        MediaPlayer player;
+        Timer timer;
+
+        PeriodicRing(MediaPlayer player, Timer timer) {
+            this.player = player;
+            this.timer = timer;
+        }
+
+        @Override
+        public void run() {
+            if(isFirst){
+                isFirst = false;
+                return;
             }
-
-            public void onFinish() {
-                player.stop();
-                player.release();
-            }
-        }.start();
+            player.stop();
+            timer.cancel();
+        }
     }
 }
