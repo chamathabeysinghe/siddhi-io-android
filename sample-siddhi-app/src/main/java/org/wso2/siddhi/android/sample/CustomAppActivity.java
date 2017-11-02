@@ -34,6 +34,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +48,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CustomAppActivity extends AppCompatActivity {
     private static final int READ_REQUEST_CODE = 42;
@@ -92,6 +95,9 @@ public class CustomAppActivity extends AppCompatActivity {
                 for (String app : inputStr.split("###")) {
                     writeAppToDatabase(app);
                 }
+                this.appList = readAppFromDatabase();
+                this.adapter = new GridViewAdapter(this,appList);
+                this.listView.setAdapter(this.adapter);
                 Snackbar.make(mainView, "Apps were saved", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
@@ -154,13 +160,14 @@ public class CustomAppActivity extends AppCompatActivity {
         intent.setType("text/*");
         startActivityForResult(intent, READ_REQUEST_CODE);
     }
+
     private class GridViewAdapter extends BaseSwipeAdapter {
 
         private Context mContext;
         private List<String> appList;
         private List<Boolean> isRunning;
 
-        public GridViewAdapter(Context mContext, List<String> appList) {
+        GridViewAdapter(Context mContext, List<String> appList) {
             this.mContext = mContext;
             this.appList = appList;
             this.isRunning = new ArrayList<>();
@@ -181,23 +188,28 @@ public class CustomAppActivity extends AppCompatActivity {
 
         @Override
         public void fillValues(int position, View convertView) {
-            TextView t = convertView.findViewById(R.id.textView);
-            t.setText(appList.get(position));
-            TextView t2 = convertView.findViewById(R.id.textView2);
-            t2.setOnClickListener(new View.OnClickListener() {
+            LinearLayout layout = convertView.findViewById(R.id.bottom_wrapper);
+            TextView appTextView = convertView.findViewById(R.id.textView);
+            appTextView.setText(appList.get(position));
+            TextView actionTextView = convertView.findViewById(R.id.textView2);
+            layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (isRunning.get(position)) {
                         if (stopApp(position)) {
-                            t2.setText("Start App");
+                            actionTextView.setText("Start App");
+                            layout.setBackgroundColor(CustomAppActivity.this.getResources().getColor(R.color.runSiddhiApp));
                             isRunning.set(position, false);
+                            Toast.makeText(CustomAppActivity.this,"App Stopped",Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(CustomAppActivity.this, "Can't stop the app", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         if (startApp(position)) {
-                            t2.setText("Stop App");
+                            actionTextView.setText("Stop App");
+                            layout.setBackgroundColor(CustomAppActivity.this.getResources().getColor(R.color.stopSiddhiApp));
                             isRunning.set(position, true);
+                            Toast.makeText(CustomAppActivity.this,"App started",Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(CustomAppActivity.this, "Can't execute the app", Toast.LENGTH_SHORT).show();
                         }
@@ -212,7 +224,7 @@ public class CustomAppActivity extends AppCompatActivity {
                 String s = MainActivity.comman.startSiddhiApp(appList.get(position));
                 return s != null;
             } catch (RemoteException e) {
-                Toast.makeText(null, "Error in executing siddhi app",
+                Toast.makeText(null, "Error in executing Siddhi app",
                         Toast.LENGTH_SHORT).show();
             }
             return false;
@@ -222,7 +234,9 @@ public class CustomAppActivity extends AppCompatActivity {
         private boolean stopApp(int position) {
 
             try {
-                MainActivity.comman.stopSiddhiApp(appList.get(position));
+                String app = appList.get(position);
+                String appName = extractAppName(app);
+                MainActivity.comman.stopSiddhiApp(appName);
                 return true;
             } catch (RemoteException e) {
                 Toast.makeText(null, "Error in executing siddhi app",
@@ -230,6 +244,15 @@ public class CustomAppActivity extends AppCompatActivity {
             }
             return false;
 
+        }
+
+        private String extractAppName(String app){
+            Pattern pattern = Pattern.compile("(?<=app:name\\(').*?(?='\\))");
+            Matcher matcher = pattern.matcher(app);
+            if(matcher.find()){
+                return matcher.group(0);
+            }
+            return null;
         }
 
         @Override

@@ -20,14 +20,11 @@ package org.wso2.siddhi.android.sample;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -37,8 +34,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
-import org.wso2.siddhi.android.platform.SiddhiAppController;
-import org.wso2.siddhi.android.platform.SiddhiAppService;
 import org.wso2.siddhi.android.platform.util.SiddhiAndroidException;
 
 import java.util.ArrayList;
@@ -199,16 +194,6 @@ public class SensorAppActivity extends AppCompatActivity {
     }
 
     /**
-     * Bind the Android app to Sidddhi Service
-     *
-     * @param view
-     */
-    public void bindToSiddhiService(View view) {
-
-
-    }
-
-    /**
      * Send the app stream to SiddhiService
      *
      * @param view
@@ -224,6 +209,19 @@ public class SensorAppActivity extends AppCompatActivity {
 
             String app = startLine + inSteams[inIndex] + outStream[outIndex] + endLine;
             Log.e("App",app);
+
+//            This is for testing the WSO2Con app Suho asked for remove after testing
+//
+//            String testApp = "@app:name('foo')\n" +
+//                    "@source(type='android-proximity',polling.interval='500', @map(type='keyvalue',fail.on.missing.attribute='false',@attributes(sensor='sensor',value='proximity')))\n" +
+//                    "define stream sensorInStream (sensor string,value float);\n" +
+//                    "@sink(type='android-sound' , play.time='5',@map(type='keyvalue'))\n" +
+//                    "define stream outputStream (sensor string,value float);\n" +
+//                    "from sensorInStream#window.timeBatch(20 sec)\n" +
+//                    "select sensor, max(value) as value group by sensor having value < 5 insert into outputStream;";
+//
+//            app =testApp;
+
             String appName = MainActivity.comman.startSiddhiApp(app);
             this.runningAppName = appName;
             if (appName != null) {

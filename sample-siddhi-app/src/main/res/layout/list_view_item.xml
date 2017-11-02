@@ -25,7 +25,7 @@
         android:id="@+id/sample2">
     <!-- Bottom View Start-->
     <LinearLayout
-            android:background="#2a9e0e"
+            android:background="@color/runSiddhiApp"
             android:id="@+id/bottom_wrapper"
             android:layout_width="160dp"
             android:weightSum="1"
