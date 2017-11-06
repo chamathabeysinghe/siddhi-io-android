@@ -18,40 +18,24 @@
 
 package org.wso2.siddhi.android.sample;
 
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
-import org.wso2.siddhi.android.platform.SiddhiAppController;
-import org.wso2.siddhi.android.platform.SiddhiAppService;
+import org.wso2.siddhi.android.sample.util.ServiceConnect;
 
+/**
+ * Starting point of the Sample App
+ */
 public class MainActivity extends AppCompatActivity {
-
-    public static SiddhiAppController comman;
-    private ServiceConnection serviceCon = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            comman = SiddhiAppController.Stub.asInterface(iBinder);
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toast.makeText(this, "Binding to the service", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, SiddhiAppService.class);
-        startService(intent);
-        bindService(intent, serviceCon, BIND_AUTO_CREATE);
+        ServiceConnect.getServiceConnection(this);
     }
 
     public void startSensorApp(View view){

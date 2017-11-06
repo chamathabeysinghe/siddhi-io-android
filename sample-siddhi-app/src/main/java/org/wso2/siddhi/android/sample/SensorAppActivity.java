@@ -35,14 +35,17 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import org.wso2.siddhi.android.platform.util.SiddhiAndroidException;
+import org.wso2.siddhi.android.sample.util.ServiceConnect;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Generate Siddhi Apps for sensors and output methods
+ */
 public class SensorAppActivity extends AppCompatActivity {
 
     private DataUpdateReceiver dataUpdateReceiver;
-
     private String inSteams[] = {
             "@source(type='android-accelerometer', @map(type='keyvalue',fail.on.missing.attribute" +
                     "='false',@attributes(sensor='sensor',vector='accelerationX')))" +
@@ -53,7 +56,6 @@ public class SensorAppActivity extends AppCompatActivity {
             "@source(type='android-gravity', @map(type='keyvalue',fail.on.missing.attribute" +
                     "='false',@attributes(sensor='sensor',vector='gravityX')))" +
                     "define stream sensorInStream ( sensor string, vector float);",
-
             "@source(type='android-gyroscope', @map(type='keyvalue',fail.on.missing.attribute" +
                     "='false',@attributes(sensor='sensor',vector='rotationX')))" +
                     "define stream sensorInStream ( sensor string, vector float);",
@@ -63,7 +65,6 @@ public class SensorAppActivity extends AppCompatActivity {
             "@source(type='android-light', @map(type='keyvalue',fail.on.missing.attribute" +
                     "='false',@attributes(sensor='sensor',vector='light')))" +
                     "define stream sensorInStream ( sensor string, vector float);",
-
             "@source(type='android-linear-accelerometer', @map(type='keyvalue'," +
                     "fail.on.missing.attribute='false'," +
                     "@attributes(sensor='sensor',vector='accelerationX')))" +
@@ -74,7 +75,6 @@ public class SensorAppActivity extends AppCompatActivity {
             "@source(type='android-pressure', @map(type='keyvalue',fail.on.missing.attribute" +
                     "='false',@attributes(sensor='sensor',vector='pressure')))" +
                     "define stream sensorInStream ( sensor string, vector float);",
-
             "@source(type='android-proximity', @map(type='keyvalue',fail.on.missing.attribute=" +
                     "'false',@attributes(sensor='sensor',vector='proximity')))" +
                     "define stream sensorInStream ( sensor string, vector float);",
@@ -97,7 +97,6 @@ public class SensorAppActivity extends AppCompatActivity {
             "linear accelerometer", "magnetic", "pressure",
             "proximity",
             "rotation", "temperature", "steps", "location"};
-
     private String broadcastIdentifier = "sample.siddhi.app";
     private String outStream[] = {
             "@sink(type='android-broadcast' , identifier='" + broadcastIdentifier + "', " +
@@ -116,29 +115,29 @@ public class SensorAppActivity extends AppCompatActivity {
     private String endLine = "from sensorInStream select * insert into outputStream";
     private final int MY_PERMISSION_ACCESS_LOCATION = 0;
     private String runningAppName = "";
-
     private ListView listView;
     private List<String> messageList = new ArrayList<>();
     private ArrayAdapter<String> listAdapter;
-    private Spinner spinner1;
-    private Spinner spinner2;
-
-
+    private Spinner inputSpinner;
+    private Spinner outputSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sensor_app);
         listView = findViewById(R.id.messageList);
-        spinner1 = findViewById(R.id.spinner);
-        spinner2 = findViewById(R.id.spinner2);
+        inputSpinner = findViewById(R.id.input_spinner);
+        outputSpinner = findViewById(R.id.output_spinner);
 
         listAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,
                 messageList);
         listView.setAdapter(listAdapter);
 
-        spinner1.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, inNames));
-        spinner2.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, outputStreamNames));
+        inputSpinner.setAdapter(new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item, inNames));
+        outputSpinner.setAdapter(new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_dropdown_item, outputStreamNames));
+
         if (ActivityCompat.checkSelfPermission(this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
@@ -152,33 +151,12 @@ public class SensorAppActivity extends AppCompatActivity {
                         "Location permission given", Toast.LENGTH_SHORT).show();
 
             } else {
-                ActivityCompat.requestPermissions(
-                        this,
+                ActivityCompat.requestPermissions(this,
                         new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
                                 Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSION_ACCESS_LOCATION);
-
                 Toast.makeText(this,
                         "Location permission denied", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSION_ACCESS_LOCATION: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    Log.e("Location", "Permission given");
-
-                } else {
-                    Log.e("Location", "Permission not given");
-                }
-                return;
             }
         }
     }
@@ -204,36 +182,20 @@ public class SensorAppActivity extends AppCompatActivity {
             stopApp(null);
         }
         try {
-            int inIndex = spinner1.getSelectedItemPosition();
-            int outIndex = spinner2.getSelectedItemPosition();
-
+            int inIndex = inputSpinner.getSelectedItemPosition();
+            int outIndex = outputSpinner.getSelectedItemPosition();
             String app = startLine + inSteams[inIndex] + outStream[outIndex] + endLine;
-            Log.e("App",app);
-
-//            This is for testing the WSO2Con app Suho asked for remove after testing
-//
-//            String testApp = "@app:name('foo')\n" +
-//                    "@source(type='android-proximity',polling.interval='500', @map(type='keyvalue',fail.on.missing.attribute='false',@attributes(sensor='sensor',value='proximity')))\n" +
-//                    "define stream sensorInStream (sensor string,value float);\n" +
-//                    "@sink(type='android-sound' , play.time='5',@map(type='keyvalue'))\n" +
-//                    "define stream outputStream (sensor string,value float);\n" +
-//                    "from sensorInStream#window.timeBatch(20 sec)\n" +
-//                    "select sensor, max(value) as value group by sensor having value < 5 insert into outputStream;";
-//
-//            app =testApp;
-
-            String appName = MainActivity.comman.startSiddhiApp(app);
+            String appName = ServiceConnect.getServiceConnection(null).startSiddhiApp(app);
             this.runningAppName = appName;
             if (appName != null) {
-                Toast.makeText(this, "Send the query : ", Toast.LENGTH_LONG).show();
-
+                Toast.makeText(this, "Send the app", Toast.LENGTH_LONG).show();
             }
         } catch (RemoteException e) {
-            Log.e("SampleApp", Log.getStackTraceString(e));
+            Log.e("Sample App Error", Log.getStackTraceString(e));
         } catch (SiddhiAndroidException e) {
             Toast.makeText(this, "Error in creating siddhi app",
                     Toast.LENGTH_SHORT).show();
-            Log.e("Error", Log.getStackTraceString(e));
+            Log.e("Siddi App Error", Log.getStackTraceString(e));
         }
     }
 
@@ -244,7 +206,7 @@ public class SensorAppActivity extends AppCompatActivity {
      */
     public void stopApp(View view) {
         try {
-            MainActivity.comman.stopSiddhiApp(runningAppName);
+            ServiceConnect.getServiceConnection(null).stopSiddhiApp(runningAppName);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -260,7 +222,6 @@ public class SensorAppActivity extends AppCompatActivity {
             if (intent.getAction().equals(broadcastIdentifier)) {
                 messageList.add(intent.getStringExtra("sensor") + " : " +
                         String.valueOf(intent.getFloatExtra("vector", 0)));
-//                messageList.add(intent.getDoubleExtra("lo",0)+" : "+String.valueOf(intent.getDoubleExtra("la",0)));
                 listAdapter.notifyDataSetChanged();
             }
         }

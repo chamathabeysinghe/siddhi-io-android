@@ -41,6 +41,7 @@ import android.widget.Toast;
 import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 import org.wso2.siddhi.android.sample.database.AppDbContract;
 import org.wso2.siddhi.android.sample.database.SiddhiAppDBHelper;
+import org.wso2.siddhi.android.sample.util.ServiceConnect;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -51,7 +52,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Get custom siddhi apps from text files and execute them
+ */
 public class CustomAppActivity extends AppCompatActivity {
+
     private static final int READ_REQUEST_CODE = 42;
     private SiddhiAppDBHelper siddhiAppDBHelper = null;
     private View mainView;
@@ -65,46 +70,40 @@ public class CustomAppActivity extends AppCompatActivity {
         setContentView(R.layout.activity_custom_app);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mainView = findViewById(R.id.main_view);
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //open the file browser to add new Siddhi Apps from a text file
                 performFileSearch();
-
             }
         });
+        mainView = findViewById(R.id.main_view);
         siddhiAppDBHelper = new SiddhiAppDBHelper(this);
-
-        this.appList = readAppFromDatabase();
-
-        this.listView = findViewById(R.id.listView);
-        this.adapter = new GridViewAdapter(this, appList);
-        this.listView.setAdapter(this.adapter);
-
+        listView = findViewById(R.id.listView);
+        updateListView();
 
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+//        executed after user select a file from file browser
         if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             Uri uri = null;
             if (resultData != null) {
                 uri = resultData.getData();
-                String inputStr = readTextFromUri(uri);
+                String inputStr = readFileFromUri(uri);
                 for (String app : inputStr.split("###")) {
                     writeAppToDatabase(app);
                 }
-                this.appList = readAppFromDatabase();
-                this.adapter = new GridViewAdapter(this,appList);
-                this.listView.setAdapter(this.adapter);
+                updateListView();
                 Snackbar.make(mainView, "Apps were saved", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         }
     }
 
-    private String readTextFromUri(Uri uri) {
+    private String readFileFromUri(Uri uri) {
         try {
             InputStream inputStream = getContentResolver().openInputStream(uri);
             BufferedReader reader = new BufferedReader(new InputStreamReader(
@@ -129,18 +128,11 @@ public class CustomAppActivity extends AppCompatActivity {
         db.insert(AppDbContract.SiddhiAppEntry.TABLE_NAME, null, contentValues);
     }
 
-    private List<String> readAppFromDatabase() {
+    private List<String> readAppsFromDatabase() {
         SQLiteDatabase db = siddhiAppDBHelper.getReadableDatabase();
         String[] projection = {AppDbContract.SiddhiAppEntry.COLUMN_NAME_APP_DEFINITION};
-
         Cursor cursor = db.query(AppDbContract.SiddhiAppEntry.TABLE_NAME,
-                projection,
-                null,
-                null,
-                null,
-                null,
-                null);
-
+                projection, null, null, null, null, null);
         List<String> items = new ArrayList<>();
         while (cursor.moveToNext()) {
             String appDefinition = cursor.getString(cursor.getColumnIndex(
@@ -150,17 +142,24 @@ public class CustomAppActivity extends AppCompatActivity {
         return items;
     }
 
-    /**
-     * Fires an intent to spin up the "file chooser" UI and select an image.
-     */
-    public void performFileSearch() {
-
+    private void performFileSearch() {
+//      Fires an intent to spin up the "file chooser" UI and select an image.
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("text/*");
         startActivityForResult(intent, READ_REQUEST_CODE);
     }
 
+    private void updateListView() {
+        this.appList = readAppsFromDatabase();
+        this.adapter = new GridViewAdapter(this, appList);
+        this.listView.setAdapter(this.adapter);
+    }
+
+    /**
+     * Custom Adapter for list view
+     * Handles item click events and updating view
+     */
     private class GridViewAdapter extends BaseSwipeAdapter {
 
         private Context mContext;
@@ -178,7 +177,7 @@ public class CustomAppActivity extends AppCompatActivity {
 
         @Override
         public int getSwipeLayoutResourceId(int position) {
-            return R.id.sample2;
+            return R.id.swipe_item;
         }
 
         @Override
@@ -189,29 +188,35 @@ public class CustomAppActivity extends AppCompatActivity {
         @Override
         public void fillValues(int position, View convertView) {
             LinearLayout layout = convertView.findViewById(R.id.bottom_wrapper);
-            TextView appTextView = convertView.findViewById(R.id.textView);
+            TextView appTextView = convertView.findViewById(R.id.app_details);
             appTextView.setText(appList.get(position));
-            TextView actionTextView = convertView.findViewById(R.id.textView2);
+            TextView actionTextView = convertView.findViewById(R.id.app_action);
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (isRunning.get(position)) {
                         if (stopApp(position)) {
                             actionTextView.setText("Start App");
-                            layout.setBackgroundColor(CustomAppActivity.this.getResources().getColor(R.color.runSiddhiApp));
+                            layout.setBackgroundColor(CustomAppActivity.this.getResources().
+                                    getColor(R.color.runSiddhiApp));
                             isRunning.set(position, false);
-                            Toast.makeText(CustomAppActivity.this,"App Stopped",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CustomAppActivity.this, "App Stopped",
+                                    Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(CustomAppActivity.this, "Can't stop the app", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CustomAppActivity.this,
+                                    "Can't stop the app", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         if (startApp(position)) {
                             actionTextView.setText("Stop App");
-                            layout.setBackgroundColor(CustomAppActivity.this.getResources().getColor(R.color.stopSiddhiApp));
+                            layout.setBackgroundColor(CustomAppActivity.this.getResources().
+                                    getColor(R.color.stopSiddhiApp));
                             isRunning.set(position, true);
-                            Toast.makeText(CustomAppActivity.this,"App started",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CustomAppActivity.this, "App started",
+                                    Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(CustomAppActivity.this, "Can't execute the app", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CustomAppActivity.this,
+                                    "Can't execute the app", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -219,37 +224,34 @@ public class CustomAppActivity extends AppCompatActivity {
         }
 
         private boolean startApp(int position) {
-
             try {
-                String s = MainActivity.comman.startSiddhiApp(appList.get(position));
+                String s = ServiceConnect.getServiceConnection(null).startSiddhiApp(
+                        appList.get(position));
                 return s != null;
             } catch (RemoteException e) {
                 Toast.makeText(null, "Error in executing Siddhi app",
                         Toast.LENGTH_SHORT).show();
             }
             return false;
-
         }
 
         private boolean stopApp(int position) {
-
             try {
                 String app = appList.get(position);
                 String appName = extractAppName(app);
-                MainActivity.comman.stopSiddhiApp(appName);
+                ServiceConnect.getServiceConnection(null).stopSiddhiApp(appName);
                 return true;
             } catch (RemoteException e) {
                 Toast.makeText(null, "Error in executing siddhi app",
                         Toast.LENGTH_SHORT).show();
             }
             return false;
-
         }
 
-        private String extractAppName(String app){
+        private String extractAppName(String app) {
             Pattern pattern = Pattern.compile("(?<=app:name\\(').*?(?='\\))");
             Matcher matcher = pattern.matcher(app);
-            if(matcher.find()){
+            if (matcher.find()) {
                 return matcher.group(0);
             }
             return null;
