@@ -26,34 +26,6 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:showIn="@layout/activity_custom_app"
         tools:context="org.wso2.siddhi.android.sample.CustomAppActivity">
-    <!--<com.daimajia.swipe.SwipeLayout-->
-            <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-            <!--android:layout_width="match_parent" android:layout_height="80dp"-->
-            <!--android:id="@+id/sample1">-->
-        <!--&lt;!&ndash; Bottom View Start&ndash;&gt;-->
-        <!--<LinearLayout-->
-                <!--android:background="#66ddff00"-->
-                <!--android:id="@+id/bottom_wrapper"-->
-                <!--android:layout_width="160dp"-->
-                <!--android:weightSum="1"-->
-                <!--android:orientation="vertical"-->
-                <!--android:layout_height="match_parent">-->
-            <!--&lt;!&ndash;What you want to show&ndash;&gt;-->
-        <!--</LinearLayout>-->
-        <!--&lt;!&ndash; Bottom View End&ndash;&gt;-->
-
-        <!--&lt;!&ndash; Surface View Start &ndash;&gt;-->
-        <!--<LinearLayout-->
-                <!--android:padding="10dp"-->
-                <!--android:background="#ffffff"-->
-                <!--android:orientation="vertical"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent">-->
-            <!--&lt;!&ndash;What you want to show in SurfaceView&ndash;&gt;-->
-        <!--</LinearLayout>-->
-        <!--&lt;!&ndash; Surface View End &ndash;&gt;-->
-    <!--</com.daimajia.swipe.SwipeLayout>-->
-
     <ListView
             android:layout_width="368dp"
             android:layout_height="495dp"
