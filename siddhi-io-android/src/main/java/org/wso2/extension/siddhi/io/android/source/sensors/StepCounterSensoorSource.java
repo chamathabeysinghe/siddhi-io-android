@@ -85,14 +85,12 @@ public class StepCounterSensoorSource extends AbstractSensorSource {
                      String[] strings, ConfigReader configReader,
                      SiddhiAppContext siddhiAppContext) {
         super.init(sourceEventListener, optionHolder, strings, configReader, siddhiAppContext);
-
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
         if (sensor == null) {
             throw new SiddhiAppCreationException("Step Counter Sensor is not supported in the " +
                     "device. Stream " + sourceEventListener.getStreamDefinition().getId() +
                     ", App : " + siddhiAppContext.getName());
         }
-
     }
 
     @Override
@@ -110,8 +108,6 @@ public class StepCounterSensoorSource extends AbstractSensorSource {
             }
             this.latestInput = output;
         }
-
-
     }
 
     protected void postUpdates() {

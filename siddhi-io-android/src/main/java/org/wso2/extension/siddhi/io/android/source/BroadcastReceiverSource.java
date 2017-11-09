@@ -68,7 +68,6 @@ import java.util.Map;
 public class BroadcastReceiverSource extends Source {
 
     private SourceEventListener sourceEventListener;
-
     private static final String BROADCAST_FILTER_IDENTIFIER = "identifier";
     private DataUpdateReceiver dataUpdateReceiver;
     private IntentFilter intentFilter;

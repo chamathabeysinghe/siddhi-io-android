@@ -46,7 +46,6 @@ public abstract class AbstractSensorSource extends Source implements SensorEvent
     protected Long pollingInterval = 0L;
     protected Timer timer;
     protected TimerTask timerTask;
-
     protected Map<String, Object> latestInput;
 
     @Override
@@ -59,12 +58,10 @@ public abstract class AbstractSensorSource extends Source implements SensorEvent
                 getSystemService(Context.SENSOR_SERVICE));
         this.pollingInterval = Long.valueOf(optionHolder.validateAndGetStaticValue(
                 "polling.interval", "0"));
-
         if(this.pollingInterval < 0){
             throw new SiddhiAppCreationException("Polling Interval is less than 0 in , "+
                     sourceEventListener.getStreamDefinition().getId());
         }
-
         if (this.pollingInterval != 0) {
             this.timer = new Timer();
             this.timerTask = new TimerTask() {
@@ -74,7 +71,6 @@ public abstract class AbstractSensorSource extends Source implements SensorEvent
                 }
             };
         }
-
     }
 
     @Override
@@ -98,7 +94,6 @@ public abstract class AbstractSensorSource extends Source implements SensorEvent
         if(pollingInterval!=0){
             this.timer.cancel();
         }
-
     }
 
     @Override
@@ -130,7 +125,6 @@ public abstract class AbstractSensorSource extends Source implements SensorEvent
 
     @Override
     public void restoreState(Map<String, Object> map) {
-
     }
 
     protected void postUpdates() {
@@ -148,5 +142,4 @@ public abstract class AbstractSensorSource extends Source implements SensorEvent
             this.latestInput.put("accuracy", i);
         }
     }
-
 }

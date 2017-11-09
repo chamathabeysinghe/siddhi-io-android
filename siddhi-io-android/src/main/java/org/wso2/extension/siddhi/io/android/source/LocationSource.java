@@ -17,7 +17,6 @@
  */
 package org.wso2.extension.siddhi.io.android.source;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -25,8 +24,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
-
 import org.wso2.siddhi.android.platform.SiddhiAppService;
 import org.wso2.siddhi.annotation.Example;
 import org.wso2.siddhi.annotation.Extension;
@@ -36,11 +33,8 @@ import org.wso2.siddhi.core.config.SiddhiAppContext;
 import org.wso2.siddhi.core.exception.ConnectionUnavailableException;
 import org.wso2.siddhi.core.exception.SiddhiAppCreationException;
 import org.wso2.siddhi.core.exception.SiddhiAppRuntimeException;
-import org.wso2.siddhi.core.query.input.stream.single.EntryValveProcessor;
 import org.wso2.siddhi.core.stream.input.source.Source;
 import org.wso2.siddhi.core.stream.input.source.SourceEventListener;
-import org.wso2.siddhi.core.util.Schedulable;
-import org.wso2.siddhi.core.util.Scheduler;
 import org.wso2.siddhi.core.util.config.ConfigReader;
 import org.wso2.siddhi.core.util.transport.OptionHolder;
 
@@ -106,12 +100,10 @@ public class LocationSource extends Source implements LocationListener {
         this.pollingInterval = Long.valueOf(optionHolder.validateAndGetStaticValue(
                 "polling.interval", "0"
         ));
-
         if (this.pollingInterval < 0) {
             throw new SiddhiAppCreationException("Polling Interval is less than 0 in , " +
                     sourceEventListener.getStreamDefinition().getId());
         }
-
         if (this.pollingInterval != 0) {
             this.timer = new Timer();
             this.timerTask = new TimerTask() {
@@ -211,7 +203,6 @@ public class LocationSource extends Source implements LocationListener {
         output.put("speed", location.getSpeed());
         output.put("accuracy", location.getAccuracy());
         output.put("timestamp", location.getTime());
-
         if (this.pollingInterval == 0L && (
                 latestInput == null ||
                         (double) output.get("latitude") != (double) latestInput.get("latitude") ||

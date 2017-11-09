@@ -79,11 +79,10 @@ import java.util.Map;
         }
 )
 public class BroadcastIntentSink extends Sink {
+
     private static final String BROADCAST_FILTER_IDENTIFIER = "identifier";
     private String identifier;
-
     private Context context;
-
 
     @Override
     protected void init(StreamDefinition streamDefinition, OptionHolder optionHolder,

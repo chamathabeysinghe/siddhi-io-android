@@ -23,7 +23,6 @@
         android:layout_height="160dp"
         android:minHeight="100dp"
         android:id="@+id/swipe_item">
-    <!-- Bottom View Start-->
     <LinearLayout
             android:background="@color/runSiddhiApp"
             android:id="@+id/bottom_wrapper"

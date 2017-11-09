@@ -95,7 +95,6 @@ import java.util.Map;
 
 public class NotificationSink extends Sink {
 
-
     private NotificationManager notificationManager;
     public static final String SIDDHI_CHANNEL_ID = "org.wso2.extension.io.android.NOTIFICATION";
     public static final String SIDDHI_CHANNEL_NAME = "SIDDHI_EXTENSION_NOTIFICATION_CHANNEL";
@@ -105,7 +104,6 @@ public class NotificationSink extends Sink {
     private String NOTIFICATION_ICON_STRING = "icon";
 
     private int notificationId = 101;
-
     private boolean multipleNotifications = false;
     private String title = "Siddhi Platform";
     private int icon = SiddhiAppService.getAppIcon();
@@ -137,10 +135,8 @@ public class NotificationSink extends Sink {
             throws ConnectionUnavailableException {
         String message = null;
         if(o instanceof Map) {
-
             Map<String, Object> mapInput = (Map<String, Object>) o;
             StringBuilder sb = new StringBuilder();
-
             for (Map.Entry entry : mapInput.entrySet()) {
                 if (entry.getKey() == null) {
                     sb.append(entry.getValue()).append("\n");
@@ -156,7 +152,6 @@ public class NotificationSink extends Sink {
         SiddhiAppService.getServiceInstance().createNotification
                 (SIDDHI_CHANNEL_ID,SIDDHI_CHANNEL_NAME,title,message,
                         icon,this.notificationId,true);
-
         if (multipleNotifications) {
             this.notificationId += 1;
         }
@@ -164,12 +159,10 @@ public class NotificationSink extends Sink {
 
     @Override
     public void connect() throws ConnectionUnavailableException {
-
     }
 
     @Override
     public void disconnect() {
-
     }
 
     @Override
@@ -184,7 +177,6 @@ public class NotificationSink extends Sink {
 
     @Override
     public void restoreState(Map<String, Object> map) {
-
     }
 
 }

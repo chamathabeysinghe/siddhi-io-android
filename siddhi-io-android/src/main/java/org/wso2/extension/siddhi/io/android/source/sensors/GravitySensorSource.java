@@ -77,7 +77,6 @@ public class GravitySensorSource extends AbstractSensorSource {
                      String[] strings, ConfigReader configReader,
                      SiddhiAppContext siddhiAppContext) {
         super.init(sourceEventListener, optionHolder, strings, configReader, siddhiAppContext);
-
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
         if (sensor == null) {
             throw new SiddhiAppCreationException("Gravity Sensor is not supported in the device. " +
@@ -95,7 +94,6 @@ public class GravitySensorSource extends AbstractSensorSource {
         output.put("gravityX", event.values[0]);
         output.put("gravityY", event.values[1]);
         output.put("gravityZ", event.values[2]);
-
         if (this.pollingInterval == 0L && (this.latestInput == null
                 || (float) this.latestInput.get("gravityX") != (float) output.get("gravityX")
                 || (float) this.latestInput.get("gravityY") != (float) output.get("gravityY")
@@ -103,8 +101,5 @@ public class GravitySensorSource extends AbstractSensorSource {
             this.sourceEventListener.onEvent(output, null);
         }
         this.latestInput = output;
-
     }
-
-
 }

@@ -273,4 +273,3 @@ public class CustomAppActivity extends AppCompatActivity {
         }
     }
 }
-

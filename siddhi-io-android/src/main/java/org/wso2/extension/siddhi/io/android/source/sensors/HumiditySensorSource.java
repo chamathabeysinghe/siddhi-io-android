@@ -79,7 +79,6 @@ public class HumiditySensorSource extends AbstractSensorSource {
                      String[] strings, ConfigReader configReader,
                      SiddhiAppContext siddhiAppContext) {
         super.init(sourceEventListener, optionHolder, strings, configReader, siddhiAppContext);
-
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY);
         if (sensor == null) {
             throw new SiddhiAppCreationException("Humidity Sensor is not supported in the device." +
@@ -95,13 +94,10 @@ public class HumiditySensorSource extends AbstractSensorSource {
         output.put("timestamp", event.timestamp);
         output.put("accuracy", event.accuracy);
         output.put("humidity", event.values[0]);
-
         if (this.pollingInterval == 0L && (this.latestInput == null ||
                 (float) this.latestInput.get("humidity") != (float) output.get("humidity"))) {
             this.sourceEventListener.onEvent(output, null);
         }
         this.latestInput = output;
-
     }
-
 }

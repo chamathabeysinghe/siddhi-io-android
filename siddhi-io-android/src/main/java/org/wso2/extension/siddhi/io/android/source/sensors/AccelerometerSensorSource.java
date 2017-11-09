@@ -79,7 +79,6 @@ public class AccelerometerSensorSource extends AbstractSensorSource {
                      String[] strings, ConfigReader configReader,
                      SiddhiAppContext siddhiAppContext) {
         super.init(sourceEventListener, optionHolder, strings, configReader, siddhiAppContext);
-
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         if (sensor == null) {
             throw new SiddhiAppCreationException("Accelerometer Sensor is not supported in " +
@@ -97,7 +96,6 @@ public class AccelerometerSensorSource extends AbstractSensorSource {
         output.put("accelerationX", event.values[0]);
         output.put("accelerationY", event.values[1]);
         output.put("accelerationZ", event.values[2]);
-
         if (this.pollingInterval == 0L && (this.latestInput == null
                 || (float) this.latestInput.get("accelerationX")
                 != (float) output.get("accelerationX")
@@ -109,5 +107,4 @@ public class AccelerometerSensorSource extends AbstractSensorSource {
         }
         this.latestInput = output;
     }
-
 }

@@ -90,7 +90,6 @@ public class SensorAppActivity extends AppCompatActivity {
             "@source(type='android-location', @map(type='keyvalue',fail.on.missing.attribute" +
                     "='false',@attributes(lo='longitude',la='latitude')))" +
                     "define stream sensorInStream ( lo double, la double);",
-
     };
     private String inNames[] = {"Accelerometer", "GameRotation", "Gravity",
             "gyroscope", "humidity", "light",
@@ -108,9 +107,7 @@ public class SensorAppActivity extends AppCompatActivity {
             "@sink(type='android-sound',time = '5' , @map(type='keyvalue'))" +
                     "define stream outputStream (sensor string, vector float); "
     };
-    private String outputStreamNames[] = {
-            "Broadcast", "Notification", "Ringing",
-    };
+    private String outputStreamNames[] = {"Broadcast", "Notification", "Ringing"};
     private String startLine = "@app:name('bar')";
     private String endLine = "from sensorInStream select * insert into outputStream";
     private final int MY_PERMISSION_ACCESS_LOCATION = 0;
@@ -128,16 +125,13 @@ public class SensorAppActivity extends AppCompatActivity {
         listView = findViewById(R.id.messageList);
         inputSpinner = findViewById(R.id.input_spinner);
         outputSpinner = findViewById(R.id.output_spinner);
-
         listAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,
                 messageList);
         listView.setAdapter(listAdapter);
-
         inputSpinner.setAdapter(new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, inNames));
         outputSpinner.setAdapter(new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_dropdown_item, outputStreamNames));
-
         if (ActivityCompat.checkSelfPermission(this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
@@ -149,7 +143,6 @@ public class SensorAppActivity extends AppCompatActivity {
                             Manifest.permission.ACCESS_COARSE_LOCATION)) {
                 Toast.makeText(this,
                         "Location permission given", Toast.LENGTH_SHORT).show();
-
             } else {
                 ActivityCompat.requestPermissions(this,
                         new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -177,7 +170,6 @@ public class SensorAppActivity extends AppCompatActivity {
      * @param view
      */
     public void sendApp(View view) { //change name
-
         if (!runningAppName.equalsIgnoreCase("")) {
             stopApp(null);
         }

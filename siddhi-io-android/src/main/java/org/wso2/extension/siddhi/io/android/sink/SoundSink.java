@@ -76,7 +76,6 @@ import java.util.TimerTask;
 
 public class SoundSink extends Sink {
 
-
     public static final String TIME_STRING = "play.time";
     public static final String RING_TONE_URI_STRING = "ring.tone.uri";
     private int time = 10;
@@ -87,14 +86,12 @@ public class SoundSink extends Sink {
                         ConfigReader configReader, SiddhiAppContext siddhiAppContext) {
         time = Integer.parseInt(optionHolder.validateAndGetStaticValue(TIME_STRING,
                 "10")) * 1000;
-
         if (time <= 0) {
             throw new SiddhiAppCreationException("Given play.time is invalid must be an integer" +
                     " greater than zero: "
                     + "Stream : " + streamDefinition.getId()
                     + "App: " + siddhiAppContext.getName());
         }
-
         String uriStr = optionHolder.validateAndGetStaticValue(RING_TONE_URI_STRING, "");
         if (uriStr.equals("")) {
             uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -122,12 +119,10 @@ public class SoundSink extends Sink {
 
     @Override
     public void connect() throws ConnectionUnavailableException {
-
     }
 
     @Override
     public void disconnect() {
-
     }
 
     @Override
@@ -142,19 +137,15 @@ public class SoundSink extends Sink {
 
     @Override
     public void restoreState(Map<String, Object> map) {
-
     }
 
     private void playRingTone(Uri uri, int time) {
         MediaPlayer player = MediaPlayer.create(SiddhiAppService.getServiceInstance(), uri);
         player.setLooping(true);
-
         Timer r = new Timer();
         PeriodicRing periodicRing = new PeriodicRing(player,r);
-
         player.start();
         r.schedule(periodicRing,0,time);
-
     }
 
     private class PeriodicRing extends TimerTask{

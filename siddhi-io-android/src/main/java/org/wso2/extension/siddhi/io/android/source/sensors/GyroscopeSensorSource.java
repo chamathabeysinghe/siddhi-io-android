@@ -79,7 +79,6 @@ public class GyroscopeSensorSource extends AbstractSensorSource {
                      String[] strings, ConfigReader configReader,
                      SiddhiAppContext siddhiAppContext) {
         super.init(sourceEventListener, optionHolder, strings, configReader, siddhiAppContext);
-
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         if (sensor == null) {
             throw new SiddhiAppCreationException("Gyroscope Sensor is not supported in " +
@@ -98,7 +97,6 @@ public class GyroscopeSensorSource extends AbstractSensorSource {
         output.put("rotationX", event.values[0]);
         output.put("rotationY", event.values[1]);
         output.put("rotationZ", event.values[2]);
-
         if (this.pollingInterval == 0L && (this.latestInput == null
                 || (float) this.latestInput.get("rotationX") != (float) output.get("rotationX")
                 || (float) this.latestInput.get("rotationY") != (float) output.get("rotationY")
@@ -106,8 +104,5 @@ public class GyroscopeSensorSource extends AbstractSensorSource {
             this.sourceEventListener.onEvent(output, null);
         }
         this.latestInput = output;
-
     }
-
-
 }

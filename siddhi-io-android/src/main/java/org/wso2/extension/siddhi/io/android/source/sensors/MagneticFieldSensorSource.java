@@ -81,7 +81,6 @@ public class MagneticFieldSensorSource extends AbstractSensorSource {
                      String[] strings, ConfigReader configReader,
                      SiddhiAppContext siddhiAppContext) {
         super.init(sourceEventListener,optionHolder,strings,configReader,siddhiAppContext);
-
         sensor=sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
         if (sensor == null) {
             throw new SiddhiAppCreationException("Magnetic Field Sensor is not supported in" +
@@ -105,7 +104,6 @@ public class MagneticFieldSensorSource extends AbstractSensorSource {
         output.put("magneticX", event.values[0]);
         output.put("magneticY", event.values[1]);
         output.put("magneticZ", event.values[2]);
-
         if (this.pollingInterval == 0L && (this.latestInput == null
                 || (float)this.latestInput.get("magneticX") != (float)output.get("magneticX")
                 ||(float)this.latestInput.get("magneticY") != (float)output.get("magneticY")
@@ -113,7 +111,5 @@ public class MagneticFieldSensorSource extends AbstractSensorSource {
             this.sourceEventListener.onEvent(output, null);
         }
         this.latestInput = output;
-
     }
-
 }

@@ -79,7 +79,6 @@ public class ProximitySensorSource extends AbstractSensorSource {
                      String[] strings, ConfigReader configReader,
                      SiddhiAppContext siddhiAppContext) {
         super.init(sourceEventListener, optionHolder, strings, configReader, siddhiAppContext);
-
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         if (sensor == null) {
             throw new SiddhiAppCreationException("Proximity Sensor is not supported in " +
@@ -96,14 +95,10 @@ public class ProximitySensorSource extends AbstractSensorSource {
         output.put("timestamp", event.timestamp);
         output.put("accuracy", event.accuracy);
         output.put("proximity", event.values[0]);
-
         if (this.pollingInterval == 0L && (this.latestInput == null
                 || (float) this.latestInput.get("proximity") != (float) output.get("proximity"))) {
             this.sourceEventListener.onEvent(output, null);
         }
         this.latestInput = output;
-
     }
-
-
 }

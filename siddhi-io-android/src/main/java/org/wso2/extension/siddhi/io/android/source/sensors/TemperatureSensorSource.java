@@ -78,7 +78,6 @@ public class TemperatureSensorSource extends AbstractSensorSource {
                      String[] strings, ConfigReader configReader,
                      SiddhiAppContext siddhiAppContext) {
         super.init(sourceEventListener, optionHolder, strings, configReader, siddhiAppContext);
-
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
         if (sensor == null) {
             throw new SiddhiAppCreationException("Temperature Sensor is not supported in the " +
@@ -94,13 +93,10 @@ public class TemperatureSensorSource extends AbstractSensorSource {
         output.put("timestamp", event.timestamp);
         output.put("accuracy", event.accuracy);
         output.put("temperature", event.values[0]);
-
         if (this.pollingInterval == 0L && (this.latestInput == null ||
                 (float) this.latestInput.get("temperature") != (float) output.get("temperature"))) {
             this.sourceEventListener.onEvent(output, null);
         }
         this.latestInput = output;
-
     }
-
 }

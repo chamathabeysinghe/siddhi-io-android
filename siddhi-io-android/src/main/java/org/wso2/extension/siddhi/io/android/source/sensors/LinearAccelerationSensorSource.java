@@ -85,7 +85,6 @@ public class LinearAccelerationSensorSource extends AbstractSensorSource {
                      String[] strings, ConfigReader configReader,
                      SiddhiAppContext siddhiAppContext) {
         super.init(sourceEventListener, optionHolder, strings, configReader, siddhiAppContext);
-
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         if (sensor == null) {
             throw new SiddhiAppCreationException("Linear Accelerometer Sensor is not supported " +
@@ -93,7 +92,6 @@ public class LinearAccelerationSensorSource extends AbstractSensorSource {
                     ", App : " + siddhiAppContext.getName());
         }
     }
-
 
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -104,7 +102,6 @@ public class LinearAccelerationSensorSource extends AbstractSensorSource {
         output.put("accelerationX", event.values[0]);
         output.put("accelerationY", event.values[1]);
         output.put("accelerationZ", event.values[2]);
-
         if (this.pollingInterval == 0L && (this.latestInput == null
                 || (float) this.latestInput.get("accelerationX") !=
                 (float) output.get("accelerationX")
@@ -115,8 +112,5 @@ public class LinearAccelerationSensorSource extends AbstractSensorSource {
             this.sourceEventListener.onEvent(output, null);
         }
         this.latestInput = output;
-
     }
-
-
 }
