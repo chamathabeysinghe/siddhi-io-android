@@ -31,7 +31,6 @@
             android:weightSum="1"
             android:orientation="vertical"
             android:layout_height="match_parent">
-        <!--What you want to show-->
 
         <TextView
                 android:text="RUN"
@@ -40,16 +39,13 @@
                 android:textSize="30sp" android:textColor="#ffffff"
                 android:textAlignment="center" />
     </LinearLayout>
-    <!-- Bottom View End-->
 
-    <!-- Surface View Start -->
     <LinearLayout
             android:padding="10dp"
             android:background="#ffffff"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        <!--What you want to show in SurfaceView-->
         <TextView
                 android:text="TextView"
                 android:layout_marginVertical="10dp"
@@ -57,5 +53,4 @@
                 android:layout_height="match_parent"
                 android:id="@+id/app_details"/>
     </LinearLayout>
-    <!-- Surface View End -->
 </com.daimajia.swipe.SwipeLayout>

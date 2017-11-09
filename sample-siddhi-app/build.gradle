@@ -20,8 +20,6 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.2"
-
-
     defaultConfig {
         applicationId "org.wso2.siddhi.android.sample"
         minSdkVersion 19
@@ -32,7 +30,6 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         android.defaultConfig.javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true
-
     }
 
     buildTypes {
@@ -69,7 +66,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'com.github.chamathabeysinghe:siddhi-android-platform:test-SNAPSHOT'
     implementation project(':siddhi-io-android')
-
     compile 'com.android.support:recyclerview-v7:26.1.0'
     compile 'com.android.support:support-v4:26.1.0'
     compile "com.daimajia.swipelayout:library:1.2.0@aar"

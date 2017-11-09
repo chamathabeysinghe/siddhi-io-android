@@ -38,8 +38,6 @@
                 android:label="@string/title_activity_custom_app"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".StartActivity">
-        </activity>
         <activity android:name=".SensorAppActivity">
         </activity>
     </application>

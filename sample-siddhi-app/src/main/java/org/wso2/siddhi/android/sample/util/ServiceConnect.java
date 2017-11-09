@@ -31,16 +31,16 @@ import org.wso2.siddhi.android.platform.SiddhiAppService;
  */
 public class ServiceConnect {
 
-    private static SiddhiAppController comman;
+    private static SiddhiAppController controller;
     private static ServiceConnection serviceCon = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            comman = SiddhiAppController.Stub.asInterface(iBinder);
+            controller = SiddhiAppController.Stub.asInterface(iBinder);
         }
 
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
-            comman = null;
+            controller = null;
         }
     };
 
@@ -48,12 +48,12 @@ public class ServiceConnect {
     }
 
     public static SiddhiAppController getServiceConnection(Context context) {
-        if (comman != null) {
-            return comman;
+        if (controller != null) {
+            return controller;
         }
         Intent intent = new Intent(context, SiddhiAppService.class);
         context.startService(intent);
         context.bindService(intent, serviceCon, context.BIND_AUTO_CREATE);
-        return comman;
+        return controller;
     }
 }
