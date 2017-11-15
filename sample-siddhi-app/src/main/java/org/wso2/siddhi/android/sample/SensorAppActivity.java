@@ -41,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Generate Siddhi Apps for sensors and output methods
+ * Generate Siddhi Apps for sensors and output methods.
  */
 public class SensorAppActivity extends AppCompatActivity {
 
@@ -110,7 +110,7 @@ public class SensorAppActivity extends AppCompatActivity {
     private String outputStreamNames[] = {"Broadcast", "Notification", "Ringing"};
     private String startLine = "@app:name('bar')";
     private String endLine = "from sensorInStream select * insert into outputStream";
-    private final int MY_PERMISSION_ACCESS_LOCATION = 0;
+    private final int myPermissionAccessLocation = 0;
     private String runningAppName = "";
     private ListView listView;
     private List<String> messageList = new ArrayList<>();
@@ -147,7 +147,7 @@ public class SensorAppActivity extends AppCompatActivity {
                 ActivityCompat.requestPermissions(this,
                         new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
                                 Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSION_ACCESS_LOCATION);
+                        myPermissionAccessLocation);
                 Toast.makeText(this,
                         "Location permission denied", Toast.LENGTH_SHORT).show();
             }
@@ -165,7 +165,7 @@ public class SensorAppActivity extends AppCompatActivity {
     }
 
     /**
-     * Send the app stream to SiddhiService
+     * Send the app stream to SiddhiService.
      *
      * @param view
      */
@@ -192,7 +192,7 @@ public class SensorAppActivity extends AppCompatActivity {
     }
 
     /**
-     * stop a running siddhi app
+     * stop a running siddhi app.
      *
      * @param view
      */
@@ -200,13 +200,13 @@ public class SensorAppActivity extends AppCompatActivity {
         try {
             ServiceConnect.getServiceConnection(null).stopSiddhiApp(runningAppName);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            Log.e("Connection Error", Log.getStackTraceString(e));
         }
     }
 
     /**
-     * Broadcast receiver to get intents from the Siddhi Service
-     * Has a hardcoded intent filter to match the query
+     * Broadcast receiver to get intents from the Siddhi Service.
+     * Has a hardcoded intent filter to match the query.
      */
     private class DataUpdateReceiver extends BroadcastReceiver {
         @Override

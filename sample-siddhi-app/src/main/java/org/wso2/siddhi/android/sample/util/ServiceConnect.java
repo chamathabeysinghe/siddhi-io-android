@@ -27,7 +27,7 @@ import org.wso2.siddhi.android.platform.SiddhiAppController;
 import org.wso2.siddhi.android.platform.SiddhiAppService;
 
 /**
- * Create a singleton service connection to SiddhiAndroidService
+ * Create a singleton service connection to SiddhiAndroidService.
  */
 public class ServiceConnect {
 

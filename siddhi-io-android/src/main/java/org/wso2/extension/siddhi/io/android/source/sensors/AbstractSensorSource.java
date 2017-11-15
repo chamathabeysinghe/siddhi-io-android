@@ -36,8 +36,10 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
-public abstract class AbstractSensorSource extends Source implements SensorEventListener{
+/**
+ * Abstract super class for sensor sources.
+ */
+public abstract class AbstractSensorSource extends Source implements SensorEventListener {
 
     protected SourceEventListener sourceEventListener;
     protected SiddhiAppContext siddhiAppContext;
@@ -58,8 +60,8 @@ public abstract class AbstractSensorSource extends Source implements SensorEvent
                 getSystemService(Context.SENSOR_SERVICE));
         this.pollingInterval = Long.valueOf(optionHolder.validateAndGetStaticValue(
                 "polling.interval", "0"));
-        if(this.pollingInterval < 0){
-            throw new SiddhiAppCreationException("Polling Interval is less than 0 in , "+
+        if (this.pollingInterval < 0) {
+            throw new SiddhiAppCreationException("Polling Interval is less than 0 in , " +
                     sourceEventListener.getStreamDefinition().getId());
         }
         if (this.pollingInterval != 0) {
@@ -91,7 +93,7 @@ public abstract class AbstractSensorSource extends Source implements SensorEvent
     @Override
     public void disconnect() {
         sensorManager.unregisterListener(this);
-        if(pollingInterval!=0){
+        if (pollingInterval != 0) {
             this.timer.cancel();
         }
     }
@@ -105,7 +107,7 @@ public abstract class AbstractSensorSource extends Source implements SensorEvent
     @Override
     public void pause() {
         sensorManager.unregisterListener(this);
-        if(pollingInterval!=0){
+        if (pollingInterval != 0) {
             this.timer.cancel();
         }
     }
@@ -138,7 +140,7 @@ public abstract class AbstractSensorSource extends Source implements SensorEvent
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
-        if(this.latestInput != null) {
+        if (this.latestInput != null) {
             this.latestInput.put("accuracy", i);
         }
     }

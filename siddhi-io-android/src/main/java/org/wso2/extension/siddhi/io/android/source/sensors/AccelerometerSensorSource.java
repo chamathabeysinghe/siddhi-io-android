@@ -32,6 +32,9 @@ import org.wso2.siddhi.core.util.transport.OptionHolder;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Source to get accelerometer data.
+ */
 @Extension(
         name = "android-accelerometer",
         namespace = "source",
@@ -82,8 +85,8 @@ public class AccelerometerSensorSource extends AbstractSensorSource {
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         if (sensor == null) {
             throw new SiddhiAppCreationException("Accelerometer Sensor is not supported in " +
-                    "the device. Stream : " + sourceEventListener.getStreamDefinition().getId()+
-                    ", App : "+siddhiAppContext.getName());
+                    "the device. Stream : " + sourceEventListener.getStreamDefinition().getId() +
+                    ", App : " + siddhiAppContext.getName());
         }
     }
 

@@ -43,6 +43,9 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Source to get data from Location sensors.
+ */
 @Extension(
         name = "android-location",
         namespace = "source",

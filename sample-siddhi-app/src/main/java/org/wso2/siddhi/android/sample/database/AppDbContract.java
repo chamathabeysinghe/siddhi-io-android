@@ -21,14 +21,17 @@ package org.wso2.siddhi.android.sample.database;
 import android.provider.BaseColumns;
 
 /**
- * App database contract
- * Keep table names and column names
+ * App database contract.
+ * Keep table names and column names.
  */
 public final class AppDbContract {
 
     private AppDbContract() {
     }
 
+    /**
+     * Contract class for siddhi_apps table.
+     */
     public static class SiddhiAppEntry implements BaseColumns {
         public static final String TABLE_NAME = "siddhi_apps";
         public static final String COLUMN_NAME_APP_DEFINITION = "app_definiton";

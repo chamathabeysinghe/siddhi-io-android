@@ -26,7 +26,7 @@ import android.widget.Toast;
 import org.wso2.siddhi.android.sample.util.ServiceConnect;
 
 /**
- * Starting point of the Sample App
+ * Starting point of the Sample App.
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -38,13 +38,13 @@ public class MainActivity extends AppCompatActivity {
         ServiceConnect.getServiceConnection(this);
     }
 
-    public void startSensorApp(View view){
-        Intent intent= new Intent(this,SensorAppActivity.class);
+    public void startSensorApp(View view) {
+        Intent intent = new Intent(this, SensorAppActivity.class);
         startActivity(intent);
     }
 
-    public void startCustomApp(View view){
-        Intent intent = new Intent(this,CustomAppActivity.class);
+    public void startCustomApp(View view) {
+        Intent intent = new Intent(this, CustomAppActivity.class);
         startActivity(intent);
     }
 }

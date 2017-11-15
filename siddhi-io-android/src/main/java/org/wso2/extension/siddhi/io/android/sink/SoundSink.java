@@ -38,6 +38,9 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Sink to create notification sound.
+ */
 @Extension(
         name = "android-sound",
         namespace = "sink",
@@ -143,13 +146,13 @@ public class SoundSink extends Sink {
         MediaPlayer player = MediaPlayer.create(SiddhiAppService.getServiceInstance(), uri);
         player.setLooping(true);
         Timer r = new Timer();
-        PeriodicRing periodicRing = new PeriodicRing(player,r);
+        PeriodicRing periodicRing = new PeriodicRing(player, r);
         player.start();
-        r.schedule(periodicRing,0,time);
+        r.schedule(periodicRing, 0, time);
     }
 
-    private class PeriodicRing extends TimerTask{
-        boolean isFirst =true;
+    private class PeriodicRing extends TimerTask {
+        boolean isFirst = true;
         MediaPlayer player;
         Timer timer;
 
@@ -160,7 +163,7 @@ public class SoundSink extends Sink {
 
         @Override
         public void run() {
-            if(isFirst){
+            if (isFirst) {
                 isFirst = false;
                 return;
             }

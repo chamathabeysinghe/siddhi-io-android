@@ -19,8 +19,6 @@ package org.wso2.extension.siddhi.io.android.source.sensors;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
-import android.util.Log;
-
 import org.wso2.siddhi.annotation.Example;
 import org.wso2.siddhi.annotation.Extension;
 import org.wso2.siddhi.annotation.Parameter;
@@ -34,6 +32,9 @@ import org.wso2.siddhi.core.util.transport.OptionHolder;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Source to get data from android magnetic sensor.
+ */
 @Extension(
         name = "android-magnetic",
         namespace = "source",
@@ -80,19 +81,19 @@ public class MagneticFieldSensorSource extends AbstractSensorSource {
     public void init(SourceEventListener sourceEventListener, OptionHolder optionHolder,
                      String[] strings, ConfigReader configReader,
                      SiddhiAppContext siddhiAppContext) {
-        super.init(sourceEventListener,optionHolder,strings,configReader,siddhiAppContext);
-        sensor=sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        super.init(sourceEventListener, optionHolder, strings, configReader, siddhiAppContext);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
         if (sensor == null) {
             throw new SiddhiAppCreationException("Magnetic Field Sensor is not supported in" +
-                    " the device. Stream " + sourceEventListener.getStreamDefinition().getId()+
-                    ", App : "+siddhiAppContext.getName());
+                    " the device. Stream " + sourceEventListener.getStreamDefinition().getId() +
+                    ", App : " + siddhiAppContext.getName());
         }
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        sensor=null;
+        sensor = null;
     }
 
     @Override
@@ -105,9 +106,9 @@ public class MagneticFieldSensorSource extends AbstractSensorSource {
         output.put("magneticY", event.values[1]);
         output.put("magneticZ", event.values[2]);
         if (this.pollingInterval == 0L && (this.latestInput == null
-                || (float)this.latestInput.get("magneticX") != (float)output.get("magneticX")
-                ||(float)this.latestInput.get("magneticY") != (float)output.get("magneticY")
-                ||(float)this.latestInput.get("magneticZ") != (float)output.get("magneticZ"))) {
+                || (float) this.latestInput.get("magneticX") != (float) output.get("magneticX")
+                || (float) this.latestInput.get("magneticY") != (float) output.get("magneticY")
+                || (float) this.latestInput.get("magneticZ") != (float) output.get("magneticZ"))) {
             this.sourceEventListener.onEvent(output, null);
         }
         this.latestInput = output;

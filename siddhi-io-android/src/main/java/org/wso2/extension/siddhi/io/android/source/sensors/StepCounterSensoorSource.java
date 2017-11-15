@@ -17,15 +17,9 @@
  */
 
 package org.wso2.extension.siddhi.io.android.source.sensors;
-/*
-Not tested, device is not supporting
- */
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
-import android.util.Log;
-
-import org.wso2.siddhi.android.platform.SiddhiAppService;
 import org.wso2.siddhi.annotation.Example;
 import org.wso2.siddhi.annotation.Extension;
 import org.wso2.siddhi.annotation.Parameter;
@@ -39,6 +33,9 @@ import org.wso2.siddhi.core.util.transport.OptionHolder;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Source to get data from android step counter sensor.
+ */
 @Extension(
         name = "android-steps",
         namespace = "source",

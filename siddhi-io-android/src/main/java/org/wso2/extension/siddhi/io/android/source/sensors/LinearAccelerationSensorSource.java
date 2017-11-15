@@ -17,11 +17,8 @@
  */
 package org.wso2.extension.siddhi.io.android.source.sensors;
 
-
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
-import android.util.Log;
-
 import org.wso2.siddhi.annotation.Example;
 import org.wso2.siddhi.annotation.Extension;
 import org.wso2.siddhi.annotation.Parameter;
@@ -35,6 +32,9 @@ import org.wso2.siddhi.core.util.transport.OptionHolder;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Source to get data from linear accelerometer sensor.
+ */
 @Extension(
         name = "android-linear-accelerometer",
         namespace = "source",

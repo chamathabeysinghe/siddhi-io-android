@@ -34,6 +34,9 @@ import org.wso2.siddhi.query.api.definition.StreamDefinition;
 
 import java.util.Map;
 
+/**
+ *Sink to create android notifications.
+ */
 @Extension(
         name = "android-notification",
         namespace = "sink",
@@ -96,12 +99,12 @@ import java.util.Map;
 public class NotificationSink extends Sink {
 
     private NotificationManager notificationManager;
-    public static final String SIDDHI_CHANNEL_ID = "org.wso2.extension.io.android.NOTIFICATION";
-    public static final String SIDDHI_CHANNEL_NAME = "SIDDHI_EXTENSION_NOTIFICATION_CHANNEL";
+    private static final String SIDDHI_CHANNEL_ID = "org.wso2.extension.io.android.NOTIFICATION";
+    private static final String SIDDHI_CHANNEL_NAME = "SIDDHI_EXTENSION_NOTIFICATION_CHANNEL";
 
-    private String MULTIPLE_NOTIFICATION_STRING = "multiple.notifications";
-    private String TITLE_STRING = "title";
-    private String NOTIFICATION_ICON_STRING = "icon";
+    private static final String MULTIPLE_NOTIFICATION_STRING = "multiple.notifications";
+    private static final String TITLE_STRING = "title";
+    private static final String NOTIFICATION_ICON_STRING = "icon";
 
     private int notificationId = 101;
     private boolean multipleNotifications = false;
@@ -122,7 +125,7 @@ public class NotificationSink extends Sink {
 
     @Override
     public Class[] getSupportedInputEventClasses() {
-        return new Class[]{Map.class,String.class};
+        return new Class[]{Map.class, String.class};
     }
 
     @Override
@@ -134,7 +137,7 @@ public class NotificationSink extends Sink {
     public void publish(Object o, DynamicOptions dynamicOptions)
             throws ConnectionUnavailableException {
         String message = null;
-        if(o instanceof Map) {
+        if (o instanceof Map) {
             Map<String, Object> mapInput = (Map<String, Object>) o;
             StringBuilder sb = new StringBuilder();
             for (Map.Entry entry : mapInput.entrySet()) {
@@ -145,13 +148,12 @@ public class NotificationSink extends Sink {
                 }
             }
             message = sb.toString();
-        }
-        else if(o instanceof String){
+        } else if (o instanceof String) {
             message = o.toString();
         }
         SiddhiAppService.getServiceInstance().createNotification
-                (SIDDHI_CHANNEL_ID,SIDDHI_CHANNEL_NAME,title,message,
-                        icon,this.notificationId,true);
+                (SIDDHI_CHANNEL_ID, SIDDHI_CHANNEL_NAME, title, message,
+                        icon, this.notificationId, true);
         if (multipleNotifications) {
             this.notificationId += 1;
         }

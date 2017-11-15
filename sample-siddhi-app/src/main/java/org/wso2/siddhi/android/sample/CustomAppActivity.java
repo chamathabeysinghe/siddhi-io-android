@@ -53,7 +53,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Get custom siddhi apps from text files and execute them
+ * Get custom siddhi apps from text files and execute them.
  */
 public class CustomAppActivity extends AppCompatActivity {
 
@@ -157,8 +157,8 @@ public class CustomAppActivity extends AppCompatActivity {
     }
 
     /**
-     * Custom Adapter for list view
-     * Handles item click events and updating view
+     * Custom Adapter for list view.
+     * Handles item click events and updating view.
      */
     private class GridViewAdapter extends BaseSwipeAdapter {
 

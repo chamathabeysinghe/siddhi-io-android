@@ -32,6 +32,9 @@ import org.wso2.siddhi.core.util.transport.OptionHolder;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class to get data from temperature sensor.
+ */
 @Extension(
         name = "android-temperature",
         namespace = "source",

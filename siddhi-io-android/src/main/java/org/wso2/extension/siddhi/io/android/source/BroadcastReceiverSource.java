@@ -38,6 +38,9 @@ import org.wso2.siddhi.core.util.transport.OptionHolder;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Source to receive android intent broadcasts.
+ */
 @Extension(
         name = "android-broadcast",
         namespace = "source",

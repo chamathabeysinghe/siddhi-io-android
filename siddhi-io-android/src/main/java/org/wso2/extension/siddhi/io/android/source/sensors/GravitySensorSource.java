@@ -32,6 +32,9 @@ import org.wso2.siddhi.core.util.transport.OptionHolder;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Source to get data from android gravity sensor.
+ */
 @Extension(
         name = "android-gravity",
         namespace = "source",

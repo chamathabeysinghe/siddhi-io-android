@@ -23,7 +23,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
- * Create the database and control it
+ * Create the database and control it.
  */
 public class SiddhiAppDBHelper extends SQLiteOpenHelper {
 

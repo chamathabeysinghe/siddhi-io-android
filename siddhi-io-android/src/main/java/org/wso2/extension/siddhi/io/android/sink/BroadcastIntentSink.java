@@ -35,6 +35,9 @@ import org.wso2.siddhi.query.api.definition.StreamDefinition;
 
 import java.util.Map;
 
+/**
+ * Sink to send android broadcasts.
+ */
 @Extension(
         name = "android-broadcast",
         namespace = "sink",
