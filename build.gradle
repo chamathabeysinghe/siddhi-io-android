@@ -42,6 +42,22 @@ allprojects {
         classpath = files()
     }
 
+    apply plugin: 'findbugs'
+    tasks.withType(FindBugs) {
+        reports {
+            xml.enabled false
+            html.enabled true
+        }
+    }
+    task findbugs(type: FindBugs) {
+        ignoreFailures = false
+        excludeFilter = file("../config/findbugs/excludeFilter.xml")
+        effort = "default"
+        classes = files("${project.rootDir}/app/build/intermediates/classes")
+        source = fileTree('src/main/java/')
+        classpath = files()
+    }
+
 }
 
 task clean(type: Delete) {
