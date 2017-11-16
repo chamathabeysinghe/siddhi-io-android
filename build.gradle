@@ -51,7 +51,6 @@ allprojects {
     }
     task findbugs(type: FindBugs) {
         ignoreFailures = false
-        excludeFilter = file("../config/findbugs/excludeFilter.xml")
         effort = "default"
         classes = files("${project.rootDir}/app/build/intermediates/classes")
         source = fileTree('src/main/java/')
